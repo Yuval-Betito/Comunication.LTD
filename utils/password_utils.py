@@ -1,6 +1,8 @@
 import os
 import hashlib
 from utils.password_config import PASSWORD_CONFIG, is_password_complex
+from django.contrib.auth.password_validation import CommonPasswordValidator
+
 
 
 def hash_password(raw_password):
@@ -26,16 +28,22 @@ def is_password_unique(user, new_password):
     return True
 
 
-def is_password_in_dictionary(password):
-    dictionary = ["password", "123456", "qwerty"]
-    return password.lower() in dictionary
+
+def is_password_in_django_common_passwords(password):
+    validator = CommonPasswordValidator()
+    try:
+        validator.validate(password)
+        return False  # הסיסמה לא נמצאת במילון
+    except:
+        return True  # הסיסמה נמצאת במילון
 
 
 def validate_password(password, user=None):
     errors = []
     errors.extend(is_password_complex(password))
 
-    if is_password_in_dictionary(password):
+    # בדיקה מול המילון המובנה של Django
+    if is_password_in_django_common_passwords(password):
         errors.append("Password is too common, please choose another one.")
 
     if user and not is_password_unique(user, password):

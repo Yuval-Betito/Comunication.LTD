@@ -2,6 +2,8 @@
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
+
+from utils.password_config import PASSWORD_CONFIG
 from .forms import CustomerForm
 from django.contrib.auth import authenticate, login
 from datetime import datetime, timedelta
@@ -21,20 +23,22 @@ from django.contrib.auth.decorators import login_required
 def home(request):
     return render(request, 'home.html')  # דף הבית הכללי
 
+
+
 def login_user(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = escape(request.POST['username'].strip())
+        password = request.POST['password'].strip()
 
         try:
             user = User.objects.get(username=username)
 
-            # בדיקת מספר ניסיונות
-            if user.login_attempts >= 3:
+            # ניהול ניסיונות כושלים
+            if user.login_attempts >= PASSWORD_CONFIG['max_login_attempts']:
                 messages.error(request, "Your account is locked due to too many failed login attempts. Please try again later.")
                 return redirect('login')
 
-            if user.check_password(password):
+            if user.check_password(password):  # שימוש ב-check_password
                 user.login_attempts = 0  # איפוס ניסיונות אחרי התחברות מוצלחת
                 user.save()
                 login(request, user)
@@ -44,32 +48,43 @@ def login_user(request):
                 user.login_attempts += 1
                 user.save()
                 messages.error(request, "Invalid credentials.")
-
         except User.DoesNotExist:
             messages.error(request, "User not found.")
     return render(request, 'login.html')
 
 
+
+from django.utils.html import escape
+
+from django.utils.html import escape
+import re
+from django.utils.html import escape
+
 def register(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm_password']
+        username = escape(request.POST['username'].strip())
+        email = escape(request.POST['email'].strip())
+        password = request.POST['password'].strip()
+        confirm_password = request.POST['confirm_password'].strip()
 
         # בדיקה אם הסיסמאות תואמות
         if password != confirm_password:
-            messages.error(request, "Passwords do not match")
+            messages.error(request, "Passwords do not match.")
+            return redirect('register')
+
+        # בדיקת חוקיות שם המשתמש
+        if not re.match(r'^[a-zA-Z0-9_]+$', username):
+            messages.error(request, "Username can only contain letters, numbers, and underscores.")
             return redirect('register')
 
         # בדיקה אם שם המשתמש כבר תפוס
         if User.objects.filter(username=username).exists():
-            messages.error(request, "This username is already taken")
+            messages.error(request, "This username is already taken.")
             return redirect('register')
 
         # בדיקה אם האימייל כבר קיים
         if User.objects.filter(email=email).exists():
-            messages.error(request, "This email is already registered")
+            messages.error(request, "This email is already registered.")
             return redirect('register')
 
         # בדיקות סיסמה
@@ -79,29 +94,41 @@ def register(request):
                 messages.error(request, error)
             return redirect('register')
 
-        # יצירת משתמש חדש
-        user = User.objects.create_user(email=email, password=password, username=username)
+        # יצירת משתמש חדש עם סיסמה מוצפנת
+        User.objects.create_user(username=username, email=email, password=password)
         messages.success(request, "Registration successful. Please login.")
         return redirect('login')
 
     return render(request, 'register.html')
+
+
+
 
 @login_required
 def user_home(request):
     # דף הבית של היוזר עם כפתור 'צור לקוח'
     return render(request, 'user_home.html')
 
+from django.utils.html import escape
+
 @login_required
 def create_customer(request):
     if request.method == 'POST':
-        form = CustomerForm(request.POST)
+        form = CustomerForm(request.POST)  # שימוש בטופס המעודכן
         if form.is_valid():
-            form.save()  # שמירת הלקוח במסד הנתונים
-            messages.success(request, "Customer added successfully.")  # הודעת הצלחה
-            return render(request, 'create_customer.html', {'form': CustomerForm()})  # הישארות בדף
+            customer = form.save(commit=False)  # שמירה זמנית של האובייקט
+            customer.save()  # שמירת הלקוח במסד הנתונים
+            messages.success(request, "Customer added successfully.")
+            return redirect('create_customer')
+        else:
+            # אם הטופס לא תקין, הצגת הודעות שגיאה
+            messages.error(request, "Failed to create customer. Please fix the errors below.")
     else:
-        form = CustomerForm()
+        form = CustomerForm()  # יצירת טופס ריק אם לא מדובר בבקשת POST
     return render(request, 'create_customer.html', {'form': form})
+
+
+
 
 def forgot_password(request):
     if request.method == 'POST':
