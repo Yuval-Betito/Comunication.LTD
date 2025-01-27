@@ -126,4 +126,123 @@ input {
     color: #155724;
     border: 1px solid #c3e6cb;
 }
+/* עיצוב מותאם לעמוד Customer List בלבד */
+/* עיצוב מותאם לעמוד Customer List בלבד */
+body.customer-list-page {
+    display: flex;
+    justify-content: center; /* מרכז אופקי */
+    align-items: center; /* מרכז אנכי */
+    height: 100vh; /* גובה מלא של העמוד */
+    margin: 0;
+    padding: 0;
+}
+
+.customer-list-container {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    width: 80%;
+    max-width: 800px;
+    color: #333;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.customer-list-container h1 {
+    margin-bottom: 20px;
+    color: #0066cc;
+    font-size: 2rem;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Styled table */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
+    text-align: left;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin: 20px 0; /* ריווח סביב הטבלה */
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.styled-table th {
+    background-color: #0066cc;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.styled-table tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.styled-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.styled-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.styled-table td {
+    color: #333;
+    font-size: 14px;
+}
+
+/* Button style */
+.customer-list-page .btn {
+    display: block;
+    padding: 15px 20px;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 300px;
+    background-color: #007bff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.customer-list-page .btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

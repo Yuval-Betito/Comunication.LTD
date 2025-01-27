@@ -12,6 +12,11 @@
             <a href="{% url 'create_customer' %}" class="btn">Create New Customer</a>
         </div>
 
+        <!-- כפתור רשימת לקוחות -->
+        <div class="button-container">
+            <a href="{% url 'customer_list' %}" class="btn">View Customer List</a>
+        </div>
+
         <!-- כפתור שינוי סיסמה -->
         <div class="button-container">
             <a href="{% url 'change_password' %}" class="btn">Change Password</a>
@@ -23,4 +28,5 @@
         </div>
     </div>
 {% endblock %}
+
 

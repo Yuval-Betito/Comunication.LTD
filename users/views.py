@@ -229,3 +229,11 @@ def change_password(request):
         return redirect('user_home')
 
     return render(request, 'change_password.html')
+
+from .models import Customer
+
+
+@login_required
+def customer_list(request):
+    customers = Customer.objects.all()
+    return render(request, 'customer_list.html', {'customers': customers})

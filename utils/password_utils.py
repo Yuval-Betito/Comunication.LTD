@@ -50,3 +50,4 @@ def validate_password(password, user=None):
         errors.append("You cannot reuse your previous passwords.")
 
     return errors
+
