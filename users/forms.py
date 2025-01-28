@@ -1,13 +1,9 @@
 from django import forms
 from .models import Customer
-
-
 from django import forms
-from .models import Customer
-
-
-from django import forms
-from .models import Customer
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from .models import User
 
 
 class CustomerForm(forms.ModelForm):
@@ -35,11 +31,50 @@ class CustomerForm(forms.ModelForm):
             raise forms.ValidationError("Phone number must be exactly 10 digits long.")
         return phone_number
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+
+
+        from django.core.validators import validate_email
+        from django.core.exceptions import ValidationError
+
+        try:
+            validate_email(email)
+        except ValidationError:
+            raise forms.ValidationError("Invalid email format. Please enter a valid email address.")
+
+
+        if Customer.objects.filter(email=email).exists():
+            raise forms.ValidationError("This email is already associated with another customer.")
+
+        return email
+
 
 
 
 class ForgotPasswordForm(forms.Form):
-    email = forms.EmailField(label="Email")
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={'placeholder': 'Enter your email'}),
+        label="Email"
+    )
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+
+
+        try:
+            validate_email(email)
+        except ValidationError:
+            raise forms.ValidationError("Invalid email format. Please enter a valid email address.")
+
+        # בדיקה אם האימייל קיים במודל User
+        if not User.objects.filter(email=email).exists():
+            raise forms.ValidationError("No account found with this email address.")
+
+        return email
+
+
 
 class ResetPasswordForm(forms.Form):
         token = forms.CharField(widget=forms.HiddenInput())

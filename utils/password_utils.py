@@ -33,16 +33,16 @@ def is_password_in_django_common_passwords(password):
     validator = CommonPasswordValidator()
     try:
         validator.validate(password)
-        return False  # הסיסמה לא נמצאת במילון
+        return False
     except:
-        return True  # הסיסמה נמצאת במילון
+        return True
 
 
 def validate_password(password, user=None):
     errors = []
     errors.extend(is_password_complex(password))
 
-    # בדיקה מול המילון המובנה של Django
+
     if is_password_in_django_common_passwords(password):
         errors.append("Password is too common, please choose another one.")
 

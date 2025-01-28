@@ -1,10 +1,7 @@
-# users/models.py
-
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from utils.password_utils import hash_password, check_password
 from django.core.exceptions import ValidationError
-from django.contrib.auth import get_user_model
 import hashlib
 import os
 from datetime import timedelta
@@ -47,9 +44,6 @@ class User(AbstractBaseUser):
         return check_password(raw_password, self.password)
 
     def email_user(self, subject, message, from_email=None, **kwargs):
-        """
-        שולח אימייל למשתמש זה.
-        """
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
     def __str__(self):
@@ -98,7 +92,6 @@ class PasswordResetToken(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def is_valid(self):
-        # בדיקה אם הטוקן בתוקף (1 שעה לדוגמה)
         return now() < self.created_at + timedelta(hours=1)
 
     @staticmethod

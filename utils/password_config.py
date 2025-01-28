@@ -10,7 +10,6 @@ PASSWORD_CONFIG = {
     'dictionary_check': True,
     'use_django_common_passwords': True,
     'max_login_attempts': 3,
-    'lock_duration_minutes': 10  # זמן נעילה לאחר כשלונות
 }
 
 
