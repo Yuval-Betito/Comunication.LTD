@@ -126,7 +126,7 @@ input {
     color: #155724;
     border: 1px solid #c3e6cb;
 }
-/* ✅ עיצוב קונטיינר הטבלה - ישפיע רק בעמוד של רשימת הלקוחות */
+
 body.customer-list-page .customer-list-container {
     background: white;
     padding: 40px;
@@ -139,13 +139,13 @@ body.customer-list-page .customer-list-container {
     text-align: center;
 }
 
-/* ✅ עיצוב קונטיינר הטבלה - ישפיע רק בעמוד של רשימת הלקוחות */
+
 body.customer-list-page .customer-table-container {
     overflow-x: auto;
     margin-top: 20px;
 }
 
-/* ✅ עיצוב טבלה - ישפיע רק בעמוד של רשימת הלקוחות */
+
 body.customer-list-page .customer-table {
     width: 100%;
     border-collapse: collapse;
@@ -155,14 +155,14 @@ body.customer-list-page .customer-table {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* ✅ כותרות הטבלה - ישפיע רק בעמוד של רשימת הלקוחות */
+
 body.customer-list-page .customer-table thead {
     background-color: #007bff;
     color: white;
     font-size: 18px;
 }
 
-/* ✅ עיצוב שורות הטבלה - ישפיע רק בעמוד של רשימת הלקוחות */
+
 body.customer-list-page .customer-table th,
 body.customer-list-page .customer-table td {
     padding: 12px;
@@ -170,7 +170,7 @@ body.customer-list-page .customer-table td {
     text-align: left;
 }
 
-/* ✅ הדגשת שורות - ישפיע רק בעמוד של רשימת הלקוחות */
+
 body.customer-list-page .customer-table tbody tr:nth-child(even) {
     background-color: #f8f9fa;
 }
@@ -180,7 +180,7 @@ body.customer-list-page .customer-table tbody tr:hover {
     transition: background-color 0.3s ease;
 }
 
-/* ✅ כפתורי הדף הזה בלבד - הכפתורים בשאר האתר לא יושפעו */
+
 body.customer-list-page .button-container {
     text-align: center;
     margin-top: 20px;
