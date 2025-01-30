@@ -6,8 +6,9 @@
 <body class="customer-list-page">
     <div class="customer-list-container">
         <h1>Customer List</h1>
-        <div class="table-container">
-            <table class="styled-table">
+
+        <div class="customer-table-container">
+            <table class="customer-table">
                 <thead>
                     <tr>
                         <th>First Name</th>
@@ -34,12 +35,15 @@
                 </tbody>
             </table>
         </div>
+
         <div class="button-container">
             <a href="{% url 'user_home' %}" class="btn">Back to User Home</a>
         </div>
     </div>
 </body>
 {% endblock %}
+
+
 
 
 

@@ -14,7 +14,7 @@ class UserManager(BaseUserManager):
         if not email:
             raise ValueError('The Email field must be set')
         user = self.model(email=email, **extra_fields)
-        user.set_password(password)  # הצפנת סיסמה
+        user.set_password(password)
         user.save(using=self._db)
         return user
 
@@ -52,7 +52,7 @@ class User(AbstractBaseUser):
 
 class PasswordHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    password = models.BinaryField()  # לאחסן את הסיסמה המוצפנת
+    password = models.BinaryField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -71,16 +71,16 @@ class Customer(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     customer_id = models.CharField(max_length=20, unique=True)
-    phone_number = models.CharField(max_length=15)  # אם צריך להכליל קידומת
+    phone_number = models.CharField(max_length=15)
     email = models.EmailField(unique=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.customer_id}"
 
     def clean(self):
-        """
-        Make sure that phone_number starts with '05' and is 10 digits long.
-        """
+
+
+
         if not self.phone_number.startswith('05'):
             raise ValidationError('Phone number must start with "05".')
         if len(self.phone_number) != 10:
@@ -88,7 +88,7 @@ class Customer(models.Model):
 
 class PasswordResetToken(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    token = models.CharField(max_length=40, unique=True)  # מתאים ל-SHA-1
+    token = models.CharField(max_length=40, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def is_valid(self):

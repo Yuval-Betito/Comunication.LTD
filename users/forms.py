@@ -68,7 +68,7 @@ class ForgotPasswordForm(forms.Form):
         except ValidationError:
             raise forms.ValidationError("Invalid email format. Please enter a valid email address.")
 
-        # בדיקה אם האימייל קיים במודל User
+
         if not User.objects.filter(email=email).exists():
             raise forms.ValidationError("No account found with this email address.")
 
