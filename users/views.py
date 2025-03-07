@@ -42,7 +42,7 @@ def login_user(request):
                 user.save()
                 messages.error(request, "Invalid credentials.")
         except User.DoesNotExist:
-            messages.error(request, "User not found.")
+            messages.error(request, "Invalid username or password.")
     return render(request, 'login.html')
 
 
@@ -65,12 +65,12 @@ def register(request):
 
 
         if User.objects.filter(username=username).exists():
-            messages.error(request, "This username is already taken.")
+            messages.error(request, "Registration unsuccessful. Please check your details and try again.")
             return redirect('register')
 
 
         if User.objects.filter(email=email).exists():
-            messages.error(request, "This email is already registered.")
+            messages.error(request, "Registration unsuccessful. Please check your details and try again.")
             return redirect('register')
 
 
@@ -122,10 +122,10 @@ def forgot_password(request):
                 subject="Password Reset",
                 message=f"Click the link to reset your password: {reset_url}",
             )
-            messages.success(request, "A password reset email has been sent.")
+            messages.success(request, "If an account with that email exists, a password reset email has been sent.")
             return redirect('reset_password', token=token)
         except User.DoesNotExist:
-            messages.error(request, "No user found with that email address.")
+            messages.error(request, "If an account with that email exists, a password reset email has been sent.")
             return redirect('forgot_password')
 
     return render(request, 'forgot_password.html')

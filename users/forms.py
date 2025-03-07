@@ -70,7 +70,7 @@ class ForgotPasswordForm(forms.Form):
 
 
         if not User.objects.filter(email=email).exists():
-            raise forms.ValidationError("No account found with this email address.")
+            raise forms.ValidationError("If this email exists in our system, you will receive an email with further instructions.")
 
         return email
 
